@@ -7,9 +7,15 @@ import {
 import Header from "../../COMPONENTS/Header";
 import FeedRender from "../../COMPONENTS/feedRender";
 import FloatAction from "../../COMPONENTS/FloatAction";
-import { ScrollView, FlatList } from "react-native-gesture-handler";
-import { ActivityIndicator } from "react-native-paper";
+import {
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
+import { AntDesign } from "@expo/vector-icons";
+
 import { useDispatch, useSelector } from "react-redux";
+import * as authActions from '../../store/actions/auth'
 
 import * as feed from "../../store/actions/feed";
 const feedScreen = (props) => {
@@ -40,6 +46,31 @@ const feedScreen = (props) => {
     }
   }, [error]);
 
+  const logout = useCallback(() => {
+    Alert.alert(
+      "Logout",
+      "Are you sure?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            dispatch(authActions.logout());
+            props.navigation.navigate("LOGIN");
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  }, [dispatch]);
+  useEffect(() => {
+    props.navigation.setParams({ log: logout });
+  }, [dispatch]);
+
   return (
     <View style={{ flexGrow: 1 }}>
       <ScrollView contentContainerStyle={{ flex: 1, alignItems: "center" }}>
@@ -47,7 +78,7 @@ const feedScreen = (props) => {
         <FlatList
           keyExtractor={(item) => item.id}
           data={FEED.reverse()}
-          renderItem={itemData=> (
+          renderItem={(itemData) => (
             <FeedRender
               name={itemData.item.Uname}
               description={itemData.item.description}
@@ -66,9 +97,24 @@ const feedScreen = (props) => {
 };
 
 feedScreen.navigationOptions = (navData) => {
+  const logout = navData.navigation.getParam("log");
   return {
-    headerMode: "none",
     headerTransparent: "true",
+    headerRight: () => (
+      <TouchableOpacity style={styles.logout} onPress={logout}>
+        <AntDesign name="user" size={hp("5%")} color="white" />
+      </TouchableOpacity>
+    ),
   };
 };
+
+const styles = StyleSheet.create({
+  logout: {
+    marginTop: -30,
+    width: 70,
+    height: 70,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 export default feedScreen;
