@@ -11,4 +11,7 @@ uploading images or video to firebase fails don't know why the same code works w
 
 here is the code 
 
+I managed to get the image/video upload with different code also there is no lazy loading in my app so you may see black blocks until the media is loading
+
+
 The app is not perfect but that's the best i can do in 24 hours have given my 100% to it hope you like it
