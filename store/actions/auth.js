@@ -78,7 +78,7 @@ export const login = (email, password) => {
 };
 
 const saveDataToStorage = async (userId,name) => {
-  console.log(userId,name+'lllll');
+ 
   
   AsyncStorage.setItem(
     'userData',
@@ -90,6 +90,7 @@ const saveDataToStorage = async (userId,name) => {
 };
 
 export const logout = () => {
+  firebase.auth().signOut();
   AsyncStorage.removeItem('userData');
   return { type: LOGOUT };
 };

@@ -9,14 +9,15 @@ export default (state = initialState, action) => {
     case INSERT:
       let NEWFEEDS=state.FEEDS;
       NEWFEEDS.push(action.newFeed)
-      console.log(NEWFEEDS)
+      console.log('inn',action.newFeed)
+      console.log(NEWFEEDS);
       return {
         ...state,
         FEEDS:NEWFEEDS
       };
     case FETCH:
         let FEED=action.FEED;
-        console.log(FEED);
+  //      console.log(FEED);
         return {
           ...state,
           FEEDS:FEED

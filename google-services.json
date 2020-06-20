@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "151238708682",
+    "firebase_url": "https://little-facebook-337e1.firebaseio.com",
+    "project_id": "little-facebook-337e1",
+    "storage_bucket": "little-facebook-337e1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:151238708682:android:baf1887d8ab5ca43861333",
+        "android_client_info": {
+          "package_name": "com.yourcompany.yourappname"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "151238708682-m3jc2j0so4ttasi9959mocjtucr19ml9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbSeyzNeAYPTYjkoD6HpQdzPDNmHwHXRY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "151238708682-m3jc2j0so4ttasi9959mocjtucr19ml9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

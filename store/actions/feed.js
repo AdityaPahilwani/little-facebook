@@ -12,19 +12,20 @@ export const insert = (description, media, mediaType) => {
     const userId = userData.userId;
     const Uname = userData.name;
     const date = new Date();
-    console.log(userId + "ll");
-    console.log(media);
-    let id = "description" + Math.random();
 
-    // let id1 = description+ Math.random();
-    // const response = await fetch(media);
-    // const blob = await response.blob();
-    // var ref = firebase.storage().ref(`${userId}`).child(id1);
-    // const picurl = await ref.put(blob);
-    // var url = await ref.getDownloadURL();
-
-    // this whole block of code isn't working looks fine but doesn't work
-    console.log(mediaType);
+    if (!media) {
+      media = false;
+      mediaType = false;
+    }
+    if (!description) {
+      description = false;
+    }
+    if (media) {
+      uploadUrl = await uploadImageAsync(media, userId);
+      media = uploadUrl;
+      console.log(uploadUrl, mediaType);
+    }
+    console.log(mediaType, media);
     firebase
       .database()
       .ref("/Feed/")
@@ -52,36 +53,77 @@ export const insert = (description, media, mediaType) => {
 };
 
 export const fetch = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     let key;
     let FeedArr = [];
     let Feed;
     let res;
     const myPromise = new Promise((resolve, reject) => {
-    firebase
-      .database()
-      .ref("/Feed/")
-      .on("value", function (dataSnapshot) {
-        res = dataSnapshot.toJSON();
-        resolve(res);
+      firebase
+        .database()
+        .ref("/Feed/")
+        .on("value", function (dataSnapshot) {
+          res = dataSnapshot.toJSON();
+          resolve(res);
+        });
+    }).then(() => {
+      for (key in res) {
+        Feed = new feed(
+          key,
+          res[key]["description"],
+          res[key]["media"],
+          res[key]["mediaType"],
+          res[key]["Uname"],
+          res[key]["date"]
+        );
+        console.log(Feed);
+        FeedArr.push(Feed);
+      }
+      Promise.all(FeedArr).then((values) => {
+        dispatch({ type: FETCH, FEED: FeedArr });
       });
-    }).then(()=>{
-        for (key in res) {
-            Feed = new feed(
-              key,
-              res[key]["description"],
-              res[key]["media"],
-              res[key]["mediaType"],
-              res[key]["Uname"],
-              res[key]["date"]
-            );
-            console.log(Feed);
-            FeedArr.push(Feed);
-          }
-          Promise.all(FeedArr).then((values) => {
-            dispatch({ type: FETCH, FEED: FeedArr });
-          })
-         
-    })
+    });
   };
 };
+
+const handleUpload = async (media) => {
+  const data = new FormData();
+  data.append("file", media);
+  data.append("upload_preset", "little-facebook");
+  data.append("cloud_name", "Aditya8989");
+
+  const res = await fetch(
+    "https://api.cloudinary.com/v1_1/Aditya8989/image/upload",
+    {
+      method: "post",
+      body: data,
+    }
+  );
+
+  console.log(res);
+};
+
+async function uploadImageAsync(uri, uid) {
+  // Why are we using XMLHttpRequest? See:
+  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function (e) {
+      console.log(e);
+      reject(new TypeError("Network request failed"));
+    };
+    xhr.responseType = "blob";
+    xhr.open("GET", uri, true);
+    xhr.send(null);
+  });
+
+  const ref = firebase.storage().ref(uid).child("temp");
+  const snapshot = await ref.put(blob);
+
+  blob.close();
+
+  return await snapshot.ref.getDownloadURL();
+}

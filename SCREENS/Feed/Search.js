@@ -6,7 +6,7 @@ import {
   View,
   FlatList,
   TextInput,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -20,26 +20,29 @@ import FeedRender from "../../COMPONENTS/feedRender";
 
 const searchScreen = (props) => {
   const { actionHandler } = props;
-  const [text, setText] = useState('');
-  const [sam,setSamp] = useState();
-  const [ARR,setARR]=useState([]);
+  const [text, setText] = useState("");
+  const [sam, setSamp] = useState();
+  const [ARR, setARR] = useState([]);
   const FEED = useSelector((state) => state.feed.FEEDS);
   let TEMP = [];
   const search = () => {
-    if(text ===""){
+    if (text === "") {
       return;
     }
     TEMP = FEED.filter((feed) => {
-      var a=feed.description.toLowerCase();
-      var b=text.toLowerCase();
-      return a.includes(b)
+      if (feed.description != false) {
+        var a = feed.description;
+        a = a.toLowerCase();
+        var b = text.toLowerCase();
+        return a.includes(b);
+      }
     });
     console.log(TEMP);
     setARR(TEMP);
     setSamp(!sam);
   };
   return (
-    <View style={{ flex: 1,alignItems:'center' }}>
+    <View style={{ flex: 1, alignItems: "center" }}>
       <Header HeaderTitle="Search" />
 
       <View style={styles.container}>

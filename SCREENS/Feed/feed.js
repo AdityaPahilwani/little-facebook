@@ -21,7 +21,7 @@ import * as feed from "../../store/actions/feed";
 const feedScreen = (props) => {
   const dispatch = useDispatch();
 
-  const FEED = useSelector((state) => state.feed.FEEDS);
+  let FEED = useSelector((state) => state.feed.FEEDS);
   const [error, setError] = useState();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -77,7 +77,9 @@ const feedScreen = (props) => {
         <Header HeaderTitle="Feed" />
         <FlatList
           keyExtractor={(item) => item.id}
-          data={FEED.reverse()}
+          data={FEED}
+          extraData={FEED}
+          showsVerticalScrollIndicator={false}
           renderItem={(itemData) => (
             <FeedRender
               name={itemData.item.Uname}

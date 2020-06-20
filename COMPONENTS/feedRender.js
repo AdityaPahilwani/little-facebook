@@ -15,9 +15,9 @@ const FeedRender = (props) => {
     date,
     onPress
   } = props;
-  console.log(mediaType,media);
+  console.log(description,mediaType);
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity style={styles.container} onPress={()=>{console.log(media,description)}}>
       <View style={styles.avatarLeft}>
         <Avatar />
       </View>
@@ -35,16 +35,18 @@ const FeedRender = (props) => {
             </Text>
           )}
         </View>
-        <View style={{ alignItems: "center", marginTop: 10 }}>
+        {media &&
+          <View style={{ alignItems: "center", marginTop: 10 }}>
           <View style={styles.imageContainer}>
-            {mediaType === "Images" ? (
+         
+            {mediaType === "Images" &&
               <Image
                 source={{
                   uri: media,
                 }}
                 style={styles.img}
               />
-            ) : (
+             }{mediaType === "Videos" &&
               <Video
                 source={{
                   uri: media,
@@ -57,9 +59,11 @@ const FeedRender = (props) => {
                 resizeMode="cover"
                 style={styles.img}
               />
-            )}
+            }
           </View>
         </View>
+        }
+
       </View>
     </TouchableOpacity>
   );
@@ -91,6 +95,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     overflow: "hidden",
+    
   },
   rightDescription: {
     width: "80%",
@@ -107,6 +112,7 @@ const styles = StyleSheet.create({
     borderRadius: wp("4%"),
     backgroundColor: "black",
     overflow: "hidden",
+    borderWidth:1
   },
   description: {
     fontSize: hp("2.4%"),

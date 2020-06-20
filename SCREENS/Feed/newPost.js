@@ -42,7 +42,7 @@ const NEW_POST = (props) => {
   let type;
 
   const savePost = async () => {
-    if ((description === "", pickedMedia === "")) {
+    if (((description === "" && pickedMedia === "") || (!description && !pickedMedia))) {
       setError("Please all details");
       return;
     }

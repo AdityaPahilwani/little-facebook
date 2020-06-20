@@ -14,6 +14,7 @@ export default (state = initialState, action) => {
         name:action.name
       };
     case LOGOUT:
+      console.log('innn');
       return initialState;
    
     default:
